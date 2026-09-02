@@ -33,7 +33,176 @@
 
     <!-- Main Logic Container -->
     <div class="w-full max-w-2xl glass-card p-6 md:p-8 mb-8">
-        <p class='text-red-500 font-bold text-center'>서버 에러가 발생했습니다. 잠시 후 다시 시도해주세요.</p>
+        <div class="glass-card">
+    <div class="p-8 bg-white/70 backdrop-blur-md rounded-xl shadow-2xl border border-white/50 space-y-6">
+        <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-8">유튜브 쇼츠 대본 길이 측정기</h2>
+        <p class="text-gray-700 text-center mb-6 max-w-md mx-auto">60초 쇼츠 영상에 딱 맞는 대본 길이를 확인하세요!</p>
+
+        <form id="shortsScriptForm" class="space-y-6">
+            <div>
+                <label for="scriptText" class="block text-sm font-medium text-gray-800 mb-2">대본 입력</label>
+                <textarea id="scriptText" rows="10"
+                    class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-y"
+                    placeholder="여기에 쇼츠 대본을 입력하세요."></textarea>
+            </div>
+
+            <div>
+                <label for="wpmInput" class="block text-sm font-medium text-gray-800 mb-2">
+                    평균 말하기 속도 (WPM: Words Per Minute)
+                </label>
+                <input type="number" id="wpmInput" value="160" min="50" max="300"
+                    class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                    title="일반적인 말하기 속도는 분당 120-180 단어입니다.">
+                <p class="text-xs text-gray-500 mt-1">평균 150-180WPM (설명: 보통 150WPM, 빠르게는 180WPM)</p>
+            </div>
+
+            <button type="submit"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg shadow-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                대본 길이 측정하기
+            </button>
+        </form>
+
+        <div id="resultsArea" class="receipt mt-8 hidden">
+            <div class="bg-gradient-to-br from-gray-50 to-white p-8 rounded-xl shadow-inner border-t-8 border-dashed border-blue-300 relative overflow-hidden font-mono text-gray-800">
+                <h3 class="text-xl font-bold text-center mb-6 text-gray-900">영수증: 쇼츠 대본 분석 결과</h3>
+                <div class="space-y-4 text-sm">
+                    <div class="flex justify-between items-center pb-2 border-b border-gray-200">
+                        <span class="text-gray-600">총 단어 수:</span>
+                        <span id="wordCountResult" class="font-semibold text-gray-900">0 단어</span>
+                    </div>
+                    <div class="flex justify-between items-center pb-2 border-b border-gray-200">
+                        <span class="text-gray-600">예상 소요 시간:</span>
+                        <span id="estimatedTimeResult" class="font-semibold text-gray-900">0분 0초</span>
+                    </div>
+                    <div class="flex justify-between items-center pb-2 border-b border-gray-200">
+                        <span class="text-gray-600">쇼츠 (60초) 기준:</span>
+                        <span id="shortsStatus" class="font-semibold text-gray-900"></span>
+                    </div>
+                    <div class="flex justify-between items-center pt-4 border-t border-dashed border-gray-300">
+                        <span class="text-base font-bold text-blue-700">최종 권장 사항:</span>
+                        <span id="recommendation" class="text-base font-bold text-blue-700"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('shortsScriptForm');
+        const scriptTextarea = document.getElementById('scriptText');
+        const wpmInput = document.getElementById('wpmInput');
+        const resultsArea = document.getElementById('resultsArea');
+        const wordCountResult = document.getElementById('wordCountResult');
+        const estimatedTimeResult = document.getElementById('estimatedTimeResult');
+        const shortsStatus = document.getElementById('shortsStatus');
+        const recommendation = document.getElementById('recommendation');
+
+        const SHORTS_LIMIT_SECONDS = 60;
+
+        function calculateScriptLength() {
+            const script = scriptTextarea.value.trim();
+            const wpm = parseInt(wpmInput.value, 10);
+
+            if (!script) {
+                resultsArea.classList.add('hidden');
+                return;
+            }
+
+            // Word count logic: split by whitespace, filter out empty strings
+            const words = script.split(/\s+/).filter(word => word.length > 0);
+            const wordCount = words.length;
+
+            // Ensure WPM is a valid number
+            if (isNaN(wpm) || wpm <= 0) {
+                // Reset to default and show an alert if WPM is invalid
+                wpmInput.value = 160; 
+                alert('유효한 말하기 속도(WPM)를 입력해주세요 (1보다 큰 숫자).');
+                return;
+            }
+
+            // Calculate estimated time in seconds
+            const estimatedTimeSeconds = (wordCount / wpm) * 60;
+
+            // Update UI with word count and estimated time
+            wordCountResult.textContent = `${wordCount} 단어`;
+
+            const minutes = Math.floor(estimatedTimeSeconds / 60);
+            const seconds = Math.round(estimatedTimeSeconds % 60);
+            estimatedTimeResult.textContent = `${minutes}분 ${seconds}초`;
+
+            // Shorts status and recommendation logic
+            const timeLeft = SHORTS_LIMIT_SECONDS - estimatedTimeSeconds;
+
+            if (timeLeft >= 0) {
+                const remainingMinutes = Math.floor(timeLeft / 60);
+                const remainingSeconds = Math.round(timeLeft % 60);
+                shortsStatus.className = 'font-semibold text-green-600'; 
+                shortsStatus.textContent = `✅ 딱 좋아요! ${remainingMinutes}분 ${remainingSeconds}초 여유`;
+                
+                if (timeLeft > 30) {
+                    recommendation.className = 'text-base font-bold text-green-700';
+                    recommendation.textContent = '아주 여유롭습니다. 내용을 더 추가해도 좋습니다!';
+                } else if (timeLeft > 10) {
+                    recommendation.className = 'text-base font-bold text-green-700';
+                    recommendation.textContent = '적절합니다. 자연스럽게 진행하세요.';
+                } else if (timeLeft > 0) {
+                    recommendation.className = 'text-base font-bold text-yellow-700';
+                    recommendation.textContent = '시간이 충분합니다. 하지만 속도를 조절할 준비를 하세요!';
+                } else { // Exactly 60s
+                    recommendation.className = 'text-base font-bold text-green-700';
+                    recommendation.textContent = '완벽합니다! 60초에 딱 맞습니다.';
+                }
+
+            } else {
+                const overTime = Math.abs(timeLeft);
+                const overMinutes = Math.floor(overTime / 60);
+                const overSeconds = Math.round(overTime % 60);
+                shortsStatus.className = 'font-semibold text-red-600'; 
+                shortsStatus.textContent = `❌ ${overMinutes}분 ${overSeconds}초 초과! 단축 필요`;
+                
+                if (overTime > 20) {
+                    recommendation.className = 'text-base font-bold text-red-700';
+                    recommendation.textContent = '상당히 깁니다. 대본을 대폭 줄이거나 빠르게 말해야 합니다.';
+                } else if (overTime > 10) {
+                    recommendation.className = 'text-base font-bold text-orange-700';
+                    recommendation.textContent = '조금 깁니다. 핵심 내용을 유지하며 줄여보세요.';
+                } else {
+                    recommendation.className = 'text-base font-bold text-yellow-700';
+                    recommendation.textContent = '약간 깁니다. 몇 문장만 줄여도 충분합니다.';
+                }
+            }
+
+            resultsArea.classList.remove('hidden');
+        }
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevent default form submission
+            calculateScriptLength();
+        });
+
+        // Debounce function to prevent excessive calculations on input
+        let debounceTimer;
+        const debounce = (func, delay) => {
+            return function(...args) {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => func.apply(this, args), delay);
+            };
+        };
+
+        const debouncedCalculate = debounce(calculateScriptLength, 300); // 300ms debounce for smoother experience
+
+        scriptTextarea.addEventListener('input', () => {
+            if (scriptTextarea.value.trim() === '') {
+                resultsArea.classList.add('hidden'); // Hide results if textarea is empty
+            } else {
+                debouncedCalculate();
+            }
+        });
+        wpmInput.addEventListener('input', debouncedCalculate);
+    });
+</script>
     </div>
 
     <!-- Share & Ads -->
