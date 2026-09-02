@@ -17,7 +17,258 @@
         <p class="text-center text-gray-600 mb-8">쇼츠 60초 안에 들어가는 대본 소요 시간을 계산합니다.</p>
         
         <!-- LOGIC START -->
-        <p class='text-red-500 font-bold text-center'>허용된 모든 모델 한도 초과. 잠시 후 다시 시도해주세요.</p>
+        <div class="max-w-xl mx-auto font-sans bg-slate-900 text-slate-100 p-6 sm:p-8 rounded-3xl shadow-2xl border border-slate-800">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <h1 class="text-2xl font-bold bg-gradient-to-r from-indigo-400 to-pink-400 bg-clip-text text-transparent">
+                Shorts Script Timer
+            </h1>
+            <p class="text-xs text-slate-400 mt-1">유튜브 쇼츠 60초 대본 길이 측정기</p>
+        </div>
+        <div class="w-10 h-10 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        </div>
+    </div>
+
+    <!-- Input Form -->
+    <div class="space-y-4">
+        <div>
+            <div class="flex justify-between items-center mb-2">
+                <label for="scriptInput" class="text-xs font-semibold text-slate-300 uppercase tracking-wider">대본 입력</label>
+                <span id="liveCharCount" class="text-xs text-slate-500 font-mono">0자</span>
+            </div>
+            <textarea 
+                id="scriptInput" 
+                rows="6" 
+                class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm leading-relaxed resize-none shadow-inner"
+                placeholder="여기에 쇼츠 대본을 입력하거나 붙여넣으세요..."></textarea>
+        </div>
+
+        <!-- Speed Selection -->
+        <div>
+            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">말하기 속도 (발화 속도)</label>
+            <div class="grid grid-cols-3 gap-2">
+                <button type="button" data-cpm="300" class="speed-btn py-2.5 px-3 rounded-xl border border-slate-800 bg-slate-950 text-slate-400 text-xs font-medium hover:border-slate-700 transition-all flex flex-col items-center gap-0.5">
+                    <span>천천히</span>
+                    <span class="text-[10px] opacity-60">300자/분</span>
+                </button>
+                <button type="button" data-cpm="350" class="speed-btn active py-2.5 px-3 rounded-xl border border-indigo-500/50 bg-indigo-500/10 text-indigo-300 text-xs font-medium transition-all flex flex-col items-center gap-0.5">
+                    <span>보통 (권장)</span>
+                    <span class="text-[10px] opacity-60">350자/분</span>
+                </button>
+                <button type="button" data-cpm="400" class="speed-btn py-2.5 px-3 rounded-xl border border-slate-800 bg-slate-950 text-slate-400 text-xs font-medium hover:border-slate-700 transition-all flex flex-col items-center gap-0.5">
+                    <span>빠르게</span>
+                    <span class="text-[10px] opacity-60">400자/분</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Receipt Output Area -->
+    <div class="receipt mt-8 bg-amber-50 text-slate-900 p-6 rounded-xl font-mono relative shadow-2xl overflow-hidden border-t-8 border-indigo-600">
+        <!-- Receipt Side Cut Effects -->
+        <div class="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-slate-900 rounded-full"></div>
+        <div class="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-slate-900 rounded-full"></div>
+
+        <!-- Receipt Header -->
+        <div class="text-center pb-4 border-b-2 border-dashed border-slate-300">
+            <h2 class="text-lg font-black tracking-wider uppercase text-slate-800">SHORTS TIME RECEIPT</h2>
+            <p class="text-[10px] text-slate-500 mt-0.5" id="receiptDate">2023-00-00 00:00:00</p>
+        </div>
+
+        <!-- Receipt Items -->
+        <div class="py-4 space-y-2 text-xs">
+            <div class="flex justify-between">
+                <span class="text-slate-600">순수 글자수 (공백제외)</span>
+                <span id="rcptCharNoSpace" class="font-bold">0 자</span>
+            </div>
+            <div class="flex justify-between">
+                <span class="text-slate-600">전체 글자수 (공백포함)</span>
+                <span id="rcptCharWithSpace" class="font-bold">0 자</span>
+            </div>
+            <div class="flex justify-between">
+                <span class="text-slate-600">단어 수</span>
+                <span id="rcptWordCount" class="font-bold">0 개</span>
+            </div>
+            <div class="flex justify-between">
+                <span class="text-slate-600">문장 휴지기 (문장부호 추정)</span>
+                <span id="rcptPauseTime" class="font-bold">+0.0 초</span>
+            </div>
+        </div>
+
+        <!-- Total Section -->
+        <div class="py-4 border-t-2 border-b-2 border-dashed border-slate-300 space-y-3">
+            <div class="flex justify-between items-baseline">
+                <span class="text-sm font-bold uppercase">예상 소요 시간</span>
+                <div class="text-right">
+                    <span id="rcptTotalSeconds" class="text-3xl font-black text-indigo-600">0.0</span>
+                    <span class="text-sm font-bold text-indigo-600">초</span>
+                </div>
+            </div>
+            
+            <!-- Status Indicator -->
+            <div class="flex justify-between items-center pt-1">
+                <span class="text-xs text-slate-500">쇼츠 적합도 (60초 기준)</span>
+                <span id="rcptStatusBadge" class="px-2.5 py-1 rounded-md text-[11px] font-bold bg-slate-200 text-slate-700">대기 중</span>
+            </div>
+        </div>
+
+        <!-- Receipt Footer / Barcode -->
+        <div class="pt-5 text-center space-y-3">
+            <div class="inline-block w-full px-4">
+                <!-- Barcode Graphic SVG -->
+                <svg class="w-full h-10 object-cover opacity-80" viewBox="0 0 200 40" fill="currentColor">
+                    <rect x="0" width="3" height="40"/>
+                    <rect x="5" width="1" height="40"/>
+                    <rect x="8" width="2" height="40"/>
+                    <rect x="14" width="4" height="40"/>
+                    <rect x="20" width="1" height="40"/>
+                    <rect x="24" width="3" height="40"/>
+                    <rect x="30" width="2" height="40"/>
+                    <rect x="35" width="1" height="40"/>
+                    <rect x="40" width="4" height="40"/>
+                    <rect x="47" width="2" height="40"/>
+                    <rect x="52" width="1" height="40"/>
+                    <rect x="56" width="3" height="40"/>
+                    <rect x="62" width="1" height="40"/>
+                    <rect x="66" width="4" height="40"/>
+                    <rect x="73" width="2" height="40"/>
+                    <rect x="78" width="1" height="40"/>
+                    <rect x="82" width="3" height="40"/>
+                    <rect x="88" width="2" height="40"/>
+                    <rect x="93" width="4" height="40"/>
+                    <rect x="100" width="1" height="40"/>
+                    <rect x="104" width="3" height="40"/>
+                    <rect x="110" width="2" height="40"/>
+                    <rect x="115" width="1" height="40"/>
+                    <rect x="120" width="4" height="40"/>
+                    <rect x="127" width="2" height="40"/>
+                    <rect x="132" width="1" height="40"/>
+                    <rect x="136" width="3" height="40"/>
+                    <rect x="142" width="1" height="40"/>
+                    <rect x="146" width="4" height="40"/>
+                    <rect x="153" width="2" height="40"/>
+                    <rect x="158" width="1" height="40"/>
+                    <rect x="162" width="3" height="40"/>
+                    <rect x="168" width="2" height="40"/>
+                    <rect x="173" width="4" height="40"/>
+                    <rect x="180" width="1" height="40"/>
+                    <rect x="184" width="3" height="40"/>
+                    <rect x="190" width="2" height="40"/>
+                    <rect x="195" width="5" height="40"/>
+                </svg>
+            </div>
+            <p class="text-[10px] text-slate-400 tracking-widest uppercase">Thank you for creating!</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const scriptInput = document.getElementById('scriptInput');
+        const liveCharCount = document.getElementById('liveCharCount');
+        const speedBtns = document.querySelectorAll('.speed-btn');
+        
+        // Receipt elements
+        const receiptDate = document.getElementById('receiptDate');
+        const rcptCharNoSpace = document.getElementById('rcptCharNoSpace');
+        const rcptCharWithSpace = document.getElementById('rcptCharWithSpace');
+        const rcptWordCount = document.getElementById('rcptWordCount');
+        const rcptPauseTime = document.getElementById('rcptPauseTime');
+        const rcptTotalSeconds = document.getElementById('rcptTotalSeconds');
+        const rcptStatusBadge = document.getElementById('rcptStatusBadge');
+
+        let currentCPM = 350; // 기본값: 보통 속도
+
+        // Set Real-time Date
+        const updateDate = () => {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            receiptDate.textContent = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        };
+        updateDate();
+
+        // Calculate Script Metrics
+        const calculate = () => {
+            const text = scriptInput.value;
+            const charWithSpace = text.length;
+            const charNoSpace = text.replace(/\s/g, '').length;
+            
+            // Calculate words (handling empty string properly)
+            const trimmed = text.trim();
+            const wordCount = trimmed ? trimmed.split(/\s+/).length : 0;
+
+            // Estimate pauses from punctuation (. ? ! \n)
+            const sentenceEnds = (text.match(/[.?!]/g) || []).length;
+            const lineBreaks = (text.match(/\n/g) || []).length;
+            const pauseSeconds = (sentenceEnds * 0.25) + (lineBreaks * 0.35);
+
+            // Speech time logic
+            let speakingSeconds = 0;
+            if (charNoSpace > 0) {
+                speakingSeconds = (charNoSpace / (currentCPM / 60)) + pauseSeconds;
+            }
+
+            // UI Updates
+            liveCharCount.textContent = `${charWithSpace}자`;
+            rcptCharNoSpace.textContent = `${charNoSpace.toLocaleString()} 자`;
+            rcptCharWithSpace.textContent = `${charWithSpace.toLocaleString()} 자`;
+            rcptWordCount.textContent = `${wordCount.toLocaleString()} 개`;
+            rcptPauseTime.textContent = `+${pauseSeconds.toFixed(1)} 초`;
+            rcptTotalSeconds.textContent = speakingSeconds.toFixed(1);
+
+            // Status Badge Logic (Shorts target: <= 60s)
+            updateStatusBadge(speakingSeconds, charNoSpace);
+        };
+
+        const updateStatusBadge = (seconds, count) => {
+            if (count === 0) {
+                rcptStatusBadge.textContent = '대기 중';
+                rcptStatusBadge.className = 'px-2.5 py-1 rounded-md text-[11px] font-bold bg-slate-200 text-slate-700';
+                return;
+            }
+
+            if (seconds <= 50) {
+                rcptStatusBadge.textContent = '안정 (여유 있음)';
+                rcptStatusBadge.className = 'px-2.5 py-1 rounded-md text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300';
+            } else if (seconds <= 58) {
+                rcptStatusBadge.textContent = '완벽 (쇼츠 최적)';
+                rcptStatusBadge.className = 'px-2.5 py-1 rounded-md text-[11px] font-bold bg-blue-100 text-blue-800 border border-blue-300';
+            } else if (seconds <= 60) {
+                rcptStatusBadge.textContent = '아슬아슬함';
+                rcptStatusBadge.className = 'px-2.5 py-1 rounded-md text-[11px] font-bold bg-amber-100 text-amber-800 border border-amber-300';
+            } else {
+                rcptStatusBadge.textContent = `초과 (+${(seconds - 60).toFixed(1)}초)`;
+                rcptStatusBadge.className = 'px-2.5 py-1 rounded-md text-[11px] font-bold bg-rose-100 text-rose-800 border border-rose-300 animate-pulse';
+            }
+        };
+
+        // Speed Button Click Handler
+        speedBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                speedBtns.forEach(b => {
+                    b.classList.remove('active', 'border-indigo-500/50', 'bg-indigo-500/10', 'text-indigo-300');
+                    b.classList.add('border-slate-800', 'bg-slate-950', 'text-slate-400');
+                });
+                
+                btn.classList.remove('border-slate-800', 'bg-slate-950', 'text-slate-400');
+                btn.classList.add('active', 'border-indigo-500/50', 'bg-indigo-500/10', 'text-indigo-300');
+
+                currentCPM = parseInt(btn.dataset.cpm, 10);
+                calculate();
+            });
+        });
+
+        // Event Listeners
+        scriptInput.addEventListener('input', calculate);
+    });
+</script>
         <!-- LOGIC END -->
         
     </div>
