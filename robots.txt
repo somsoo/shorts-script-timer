@@ -1,1 +1,4 @@
-User-agent: *\nAllow: /\nSitemap: https://somsoo.github.io/shorts-script-timer/sitemap.xml
+User-agent: *
+Allow: /
+
+Sitemap: https://shorts-script-timer.enjoy-onepage.com/sitemap.xml
