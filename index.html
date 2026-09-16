@@ -2,6 +2,11 @@
 
 <html lang="ko">
 <head>
+    <!-- Performance Optimization: Resource Preconnect -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://pagead2.googlesyndication.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="index, follow" name="robots"/>
@@ -96,6 +101,17 @@
 
         .receipt { background: #fff; padding: 20px; border-radius: 10px; border: 1px dashed #ccc; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
 
+    
+        /* U3 Accessibility: Global Keyboard Focus Ring Standard */
+        :focus-visible {
+            outline: 2px solid #3b82f6 !important;
+            outline-offset: 2px !important;
+        }
+        input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible {
+            outline: 2px solid #2563eb !important;
+            outline-offset: 1px !important;
+        }
+    
     </style>
 <link href="https://shorts-script-timer.enjoy-onepage.com/rss.xml" rel="alternate" title="유튜브 쇼츠 대본 길이 측정기 | 60초 숏폼·릴스·틱톡 글자수 타이머 RSS Feed" type="application/rss+xml"/>
 <link href="https://shorts-script-timer.enjoy-onepage.com/sitemap.xml" rel="sitemap" title="Sitemap" type="application/xml"/>
