@@ -1,46 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>유튜브 쇼츠 대본 길이 측정기 | 60초 숏폼·릴스·틱톡 글자수 타이머</title>
-    <link>https://shorts-script-timer.enjoy-onepage.com/</link>
-    <description>유튜브 쇼츠 대본 길이 측정기 | 60초 숏폼·릴스·틱톡 글자수 타이머 실시간 온라인 도구 및 팩트 기반 전문 칼럼 피드</description>
-    <language>ko-KR</language>
-    <lastBuildDate>Sat, 12 Sep 2026 03:00:00 +0900</lastBuildDate>
-    <atom:link href="https://shorts-script-timer.enjoy-onepage.com/rss.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>유튜브 쇼츠 대본 길이 측정기 | 60초 숏폼·릴스·틱톡 글자수 타이머</title>
-      <link>https://shorts-script-timer.enjoy-onepage.com/</link>
-      <guid isPermaLink="true">https://shorts-script-timer.enjoy-onepage.com/</guid>
-      <description>유튜브 쇼츠 대본 길이 측정기 | 60초 숏폼·릴스·틱톡 글자수 타이머 실시간 온라인 무료 도구 및 시뮬레이터</description>
-      <pubDate>Sat, 12 Sep 2026 00:00:00 +0900</pubDate>
-    </item>
-    <item>
-      <title>유튜브 쇼츠 대본 길이 측정기 | 60초 숏폼·릴스·틱톡 글자수 타이머 서비스 소개 및 산출 공식 안내</title>
-      <link>https://shorts-script-timer.enjoy-onepage.com/about.html</link>
-      <guid isPermaLink="true">https://shorts-script-timer.enjoy-onepage.com/about.html</guid>
-      <description>유튜브 쇼츠 대본 길이 측정기 | 60초 숏폼·릴스·틱톡 글자수 타이머의 데이터 처리 원칙, 공식 산출 로직 및 검증 기준입니다.</description>
-      <pubDate>Sat, 12 Sep 2026 01:00:00 +0900</pubDate>
-    </item>
-    <item>
-      <title>유튜브 쇼츠 대본 길이 측정기 | 60초 숏폼·릴스·틱톡 글자수 타이머 개인정보처리방침</title>
-      <link>https://shorts-script-timer.enjoy-onepage.com/privacy.html</link>
-      <guid isPermaLink="true">https://shorts-script-timer.enjoy-onepage.com/privacy.html</guid>
-      <description>유튜브 쇼츠 대본 길이 측정기 | 60초 숏폼·릴스·틱톡 글자수 타이머의 개인정보 보호 및 100% 브라우저 메모리 로컬 연산 보안 정책입니다.</description>
-      <pubDate>Sat, 12 Sep 2026 01:10:00 +0900</pubDate>
-    </item>
-    <item>
-      <title>유튜브 쇼츠·릴스 60초 대본 글자 수와 1분당 한국어 적정 발화 속도 | 유튜브 쇼츠 대본 길이 측정기 | 60초 숏폼·릴스·틱톡 글자수 타이머</title>
-      <link>https://shorts-script-timer.enjoy-onepage.com/guides/guide1.html</link>
-      <guid isPermaLink="true">https://shorts-script-timer.enjoy-onepage.com/guides/guide1.html</guid>
-      <description>한국어 표준 말하기 속도(분당 360~390자) 기준 59초 쇼츠 대본 분량 공식과 숏폼 알고리즘 공략법입니다.</description>
-      <pubDate>Sat, 12 Sep 2026 02:00:00 +0900</pubDate>
-    </item>
-    <item>
-      <title>쇼츠 3초 훅(Hook) 작성 공식: 스와이프 이탈률을 70% 줄이는 오프닝 기법 | 유튜브 쇼츠 대본 길이 측정기 | 60초 숏폼·릴스·틱톡 글자수 타이머</title>
-      <link>https://shorts-script-timer.enjoy-onepage.com/guides/guide2.html</link>
-      <guid isPermaLink="true">https://shorts-script-timer.enjoy-onepage.com/guides/guide2.html</guid>
-      <description>유튜브가 공개한 시청자 70%가 이탈하는 초반 3초를 사로잡는 질문형, 부정형, 충격형 카피라이팅입니다.</description>
-      <pubDate>Sat, 12 Sep 2026 02:15:00 +0900</pubDate>
-    </item>
-  </channel>
+<channel>
+  <title>숏폼 대본 타이머 | 60초 영상 대본 글자 수·읽는 시간 계산</title>
+  <link>https://shorts-script-timer.enjoy-onepage.com/</link>
+  <description>대본을 붙여 넣으면 내 읽기 속도로 몇 초가 걸리는지, 15·30·60초에 몇 자가 들어가는지 알려 주고, 속도에 맞춰 흐르는 프롬프터로 읽을 수 있습니다. 무료, 이 기기에만 저장.</description>
+  <language>ko-kr</language>
+  <atom:link href="https://shorts-script-timer.enjoy-onepage.com/rss.xml" rel="self" type="application/rss+xml" />
+  <lastBuildDate>Wed, 30 Sep 2026 07:20:00 GMT</lastBuildDate>
+  <item>
+    <title>이용약관 | 숏폼 대본 타이머</title>
+    <link>https://shorts-script-timer.enjoy-onepage.com/terms.html</link>
+    <guid>https://shorts-script-timer.enjoy-onepage.com/terms.html</guid>
+    <description>입력한 읽기 속도로 계산한 예상 시간을 보여 주며, 실제 녹음 길이와 다를 수 있습니다.</description>
+    <pubDate>Wed, 30 Sep 2026 07:20:00 GMT</pubDate>
+  </item>
+  <item>
+    <title>개인정보처리방침 | 숏폼 대본 타이머</title>
+    <link>https://shorts-script-timer.enjoy-onepage.com/privacy.html</link>
+    <guid>https://shorts-script-timer.enjoy-onepage.com/privacy.html</guid>
+    <description>대본과 설정은 이 브라우저에만 저장하며 운영자에게 보내지 않습니다.</description>
+    <pubDate>Wed, 30 Sep 2026 07:20:00 GMT</pubDate>
+  </item>
+</channel>
 </rss>
